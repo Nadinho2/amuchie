@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function AdminIndexPage() {
+async function AdminIndexContent() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -53,6 +54,22 @@ export default async function AdminIndexPage() {
         </Link>
       </section>
     </main>
+  );
+}
+
+export default function AdminIndexPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+          <div className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-6 text-sm text-zinc-300">
+            Loading admin dashboard...
+          </div>
+        </main>
+      }
+    >
+      <AdminIndexContent />
+    </Suspense>
   );
 }
 
