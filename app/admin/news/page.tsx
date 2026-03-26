@@ -53,6 +53,20 @@ async function AdminNewsContent({ searchParams }: { searchParams: SearchParams }
         <p className="text-sm text-zinc-300">
           Create, edit, publish, and remove campaign news.
         </p>
+        <div className="flex flex-wrap gap-2 pt-1">
+          <Link
+            href="/admin/news"
+            className="rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-1.5 text-xs text-amber-200"
+          >
+            News Dashboard
+          </Link>
+          <Link
+            href="/admin/program-uploads"
+            className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 hover:bg-zinc-900"
+          >
+            Program Moderation
+          </Link>
+        </div>
       </header>
 
       {(saved || updated || deleted) && (

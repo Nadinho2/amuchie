@@ -62,7 +62,20 @@ type ProfileRow = {
   lga: string | null;
 };
 
-async function AdminProgramUploadsContent() {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+function one(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+async function AdminProgramUploadsContent({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sp = await searchParams;
+  const saved = one(sp.saved);
+  const errorMsg = one(sp.error);
   const supabase = await createClient();
 
   const {
@@ -154,6 +167,16 @@ async function AdminProgramUploadsContent() {
           Review pending program uploads. Approved media appears in the public
           programs feed immediately.
         </p>
+        {saved ? (
+          <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 p-3 text-sm text-emerald-200">
+            Moderation update successful ({saved.replaceAll("_", " ")}).
+          </div>
+        ) : null}
+        {errorMsg ? (
+          <div className="rounded-xl border border-red-400/40 bg-red-500/10 p-3 text-sm text-red-200">
+            {decodeURIComponent(errorMsg)}
+          </div>
+        ) : null}
       </header>
 
       <section className="mt-6 space-y-4">
@@ -317,7 +340,11 @@ async function AdminProgramUploadsContent() {
   );
 }
 
-export default function AdminProgramUploadsPage() {
+export default function AdminProgramUploadsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   return (
     <Suspense
       fallback={
@@ -328,7 +355,7 @@ export default function AdminProgramUploadsPage() {
         </main>
       }
     >
-      <AdminProgramUploadsContent />
+      <AdminProgramUploadsContent searchParams={searchParams} />
     </Suspense>
   );
 }

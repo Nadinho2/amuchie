@@ -5,6 +5,7 @@ import { AmbassadorIdCard } from "@/components/id-card/ambassador-id-card";
 import { EzinwaHero } from "@/components/ezinwa/ezinwa-hero";
 import { createClient } from "@/lib/supabase/server";
 import { ProgramCard } from "@/components/programs/program-card";
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 const highlights = [
@@ -26,6 +27,7 @@ const highlights = [
 ];
 
 async function HomeContent() {
+  noStore();
   const supabase = await createClient();
   const {
     data: { user },

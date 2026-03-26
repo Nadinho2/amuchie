@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { AmbassadorIdCard } from "@/components/id-card/ambassador-id-card";
+import { ProfilePhotoUploadField } from "@/components/profile/profile-photo-upload-field";
 import { upsertAmbassadorProfile } from "./actions";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
@@ -103,18 +104,10 @@ async function ProtectedContent(props: {
                 className="w-full rounded-xl border border-zinc-700 bg-zinc-950/80 px-3 py-2.5 text-sm text-zinc-100 outline-none focus:border-amber-300/70"
               />
             </div>
-            <div>
-              <label htmlFor="photo_url" className="mb-1 block text-sm text-zinc-300">
-                Photo URL
-              </label>
-              <input
-                id="photo_url"
-                name="photo_url"
-                defaultValue={profile?.photo_url ?? ""}
-                placeholder="https://..."
-                className="w-full rounded-xl border border-zinc-700 bg-zinc-950/80 px-3 py-2.5 text-sm text-zinc-100 outline-none focus:border-amber-300/70"
-              />
-            </div>
+            <ProfilePhotoUploadField
+              userId={user.id}
+              initialPhotoUrl={profile?.photo_url}
+            />
 
             <button
               type="submit"

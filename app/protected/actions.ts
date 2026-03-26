@@ -25,7 +25,7 @@ export async function upsertAmbassadorProfile(formData: FormData) {
 
   const { data: existingProfile, error: existingError } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, photo_url")
     .eq("user_id", user.id)
     .maybeSingle();
 
@@ -34,13 +34,14 @@ export async function upsertAmbassadorProfile(formData: FormData) {
   }
 
   if (existingProfile) {
+    const nextPhotoUrl = photoUrl || existingProfile.photo_url || null;
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
         full_name: fullName,
         phone: phone || null,
         lga: lga || null,
-        photo_url: photoUrl || null,
+        photo_url: nextPhotoUrl,
       })
       .eq("user_id", user.id);
 

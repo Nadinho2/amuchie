@@ -6,6 +6,7 @@ import { ProgramFilters } from "@/components/programs/program-filters";
 import { SubmitProgramDialog } from "@/components/programs/submit-program-dialog";
 import { ReportImpactDialog } from "@/components/programs/report-impact-dialog";
 import type { CreateEmpowermentProgramInput } from "@/app/programs/actions";
+import { unstable_noStore as noStore } from "next/cache";
 import { Suspense } from "react";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
@@ -19,6 +20,7 @@ async function ProgramsPageContent({
 }: {
   searchParams: SearchParams;
 }) {
+  noStore();
   const sp = await searchParams;
   const tab = one(sp.tab) === "my" ? "my" : "all";
   const uploaded = one(sp.uploaded) === "1";
@@ -71,17 +73,6 @@ async function ProgramsPageContent({
     { data: programsForSelect },
   ] = await Promise.all([programsQuery, programsQueryForSelect]);
 
-  if (programsError) {
-    // If this fails, we still want the page to load.
-    return (
-      <main className="mx-auto w-full max-w-6xl px-4 py-10">
-        <p className="text-sm text-red-300">
-          Could not load programs at the moment.
-        </p>
-      </main>
-    );
-  }
-
   const programsList = programs ?? [];
   const programIds = programsList.map((p) => p.id);
 
@@ -131,6 +122,11 @@ async function ProgramsPageContent({
           Explore real empowerment programs across Imo State. Submit photos/videos for
           moderation so verified activities appear in the public feed.
         </p>
+        {programsError ? (
+          <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-3 text-sm text-red-200">
+            Could not load public programs: {programsError.message}
+          </div>
+        ) : null}
       </header>
 
       <nav className="mt-6 flex items-center gap-2">
@@ -156,6 +152,28 @@ async function ProgramsPageContent({
         </Link>
       </nav>
 
+      <section className="mt-5 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+        <p className="text-xs uppercase tracking-[0.18em] text-emerald-300/80">
+          Ambassador Upload Panel
+        </p>
+        {user ? (
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            <SubmitProgramDialog />
+            <ReportImpactDialog programs={programsForReportDialog} />
+          </div>
+        ) : (
+          <div className="mt-3 rounded-2xl border border-zinc-700 bg-zinc-900/40 p-4 text-sm text-zinc-300">
+            Sign in to submit new programs and upload impact evidence.
+            <Link
+              href="/auth/login"
+              className="ml-2 inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200 hover:bg-amber-300/20"
+            >
+              Login
+            </Link>
+          </div>
+        )}
+      </section>
+
       {tab === "all" ? (
         <section className="mt-6 grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1 space-y-4">
@@ -164,13 +182,6 @@ async function ProgramsPageContent({
               initialLga={lga}
               initialDate={date}
             />
-
-            {user && (
-              <div className="space-y-2">
-                <SubmitProgramDialog />
-                <ReportImpactDialog programs={programsForReportDialog} />
-              </div>
-            )}
 
             {!user && (
               <div className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-4 text-sm text-zinc-300">
@@ -225,7 +236,6 @@ async function ProgramsPageContent({
               )}
               <div className="grid gap-6 lg:grid-cols-3">
                 <div className="lg:col-span-1 space-y-3">
-                  <ReportImpactDialog programs={programsForReportDialog} />
                   <div className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-4 text-xs text-zinc-400">
                     Your uploads appear here immediately as pending, and move to approved after moderation.
                   </div>

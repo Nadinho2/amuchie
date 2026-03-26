@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
@@ -41,8 +42,18 @@ export default function RootLayout({
           <div className="min-h-screen">
             <header className="sticky top-0 z-40 border-b border-zinc-700/70 bg-zinc-950/80 backdrop-blur">
               <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-                <Link href="/" className="font-extrabold tracking-tight text-white">
-                  Amuchie Portal
+                <Link href="/" className="inline-flex items-center gap-2.5">
+                  <Image
+                    src="/amuchie-logo.svg"
+                    alt="Amuchie Ambassadors Logo"
+                    width={34}
+                    height={34}
+                    className="rounded-md"
+                    priority
+                  />
+                  <span className="bg-gradient-to-r from-emerald-200 via-yellow-300 to-amber-300 bg-clip-text text-sm font-extrabold tracking-[0.08em] text-transparent sm:text-base">
+                    AMUCHIE AMBASSADORS
+                  </span>
                 </Link>
                 <nav className="flex items-center gap-2 text-xs sm:text-sm">
                   <Link
@@ -68,12 +79,6 @@ export default function RootLayout({
                     className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
                   >
                     Dashboard
-                  </Link>
-                  <Link
-                    href="/admin"
-                    className="rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-1.5 text-amber-200 hover:bg-amber-300/20"
-                  >
-                    Admin
                   </Link>
                 </nav>
               </div>

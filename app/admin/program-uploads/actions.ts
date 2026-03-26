@@ -32,7 +32,7 @@ export async function approveProgramUploadAction(formData: FormData) {
   const supabase = await createClient();
   const user = await requireAdmin(supabase);
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("program_uploads")
     .update({
       approved: true,
@@ -40,13 +40,20 @@ export async function approveProgramUploadAction(formData: FormData) {
       moderated_by: user.id,
       moderated_at: new Date().toISOString(),
     })
-    .eq("id", uploadId);
+    .eq("id", uploadId)
+    .select("id");
 
-  if (error) {
-    redirect(`/admin/program-uploads?error=${encodeURIComponent(error.message)}`);
+  if (error || !data || data.length === 0) {
+    const message =
+      error?.message ||
+      "Approval failed: no rows were updated. Confirm admin role and RLS policies.";
+    redirect(`/admin/program-uploads?error=${encodeURIComponent(message)}`);
   }
 
   revalidatePath("/admin/program-uploads");
+  revalidatePath("/programs");
+  revalidatePath("/");
+  redirect("/admin/program-uploads?saved=upload_approved");
 }
 
 export async function rejectProgramUploadAction(formData: FormData) {
@@ -56,7 +63,7 @@ export async function rejectProgramUploadAction(formData: FormData) {
   const supabase = await createClient();
   const user = await requireAdmin(supabase);
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("program_uploads")
     .update({
       approved: false,
@@ -64,13 +71,20 @@ export async function rejectProgramUploadAction(formData: FormData) {
       moderated_by: user.id,
       moderated_at: new Date().toISOString(),
     })
-    .eq("id", uploadId);
+    .eq("id", uploadId)
+    .select("id");
 
-  if (error) {
-    redirect(`/admin/program-uploads?error=${encodeURIComponent(error.message)}`);
+  if (error || !data || data.length === 0) {
+    const message =
+      error?.message ||
+      "Rejection failed: no rows were updated. Confirm admin role and RLS policies.";
+    redirect(`/admin/program-uploads?error=${encodeURIComponent(message)}`);
   }
 
   revalidatePath("/admin/program-uploads");
+  revalidatePath("/programs");
+  revalidatePath("/");
+  redirect("/admin/program-uploads?saved=upload_rejected");
 }
 
 export async function approveProgramAction(formData: FormData) {
@@ -80,7 +94,7 @@ export async function approveProgramAction(formData: FormData) {
   const supabase = await createClient();
   const user = await requireAdmin(supabase);
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("empowerment_programs")
     .update({
       approved: true,
@@ -88,15 +102,20 @@ export async function approveProgramAction(formData: FormData) {
       moderated_by: user.id,
       moderated_at: new Date().toISOString(),
     })
-    .eq("id", programId);
+    .eq("id", programId)
+    .select("id");
 
-  if (error) {
-    redirect(`/admin/program-uploads?error=${encodeURIComponent(error.message)}`);
+  if (error || !data || data.length === 0) {
+    const message =
+      error?.message ||
+      "Program approval failed: no rows were updated. Confirm admin role and RLS policies.";
+    redirect(`/admin/program-uploads?error=${encodeURIComponent(message)}`);
   }
 
   revalidatePath("/admin/program-uploads");
   revalidatePath("/programs");
   revalidatePath("/");
+  redirect("/admin/program-uploads?saved=program_approved");
 }
 
 export async function rejectProgramAction(formData: FormData) {
@@ -106,7 +125,7 @@ export async function rejectProgramAction(formData: FormData) {
   const supabase = await createClient();
   const user = await requireAdmin(supabase);
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("empowerment_programs")
     .update({
       approved: false,
@@ -114,14 +133,19 @@ export async function rejectProgramAction(formData: FormData) {
       moderated_by: user.id,
       moderated_at: new Date().toISOString(),
     })
-    .eq("id", programId);
+    .eq("id", programId)
+    .select("id");
 
-  if (error) {
-    redirect(`/admin/program-uploads?error=${encodeURIComponent(error.message)}`);
+  if (error || !data || data.length === 0) {
+    const message =
+      error?.message ||
+      "Program rejection failed: no rows were updated. Confirm admin role and RLS policies.";
+    redirect(`/admin/program-uploads?error=${encodeURIComponent(message)}`);
   }
 
   revalidatePath("/admin/program-uploads");
   revalidatePath("/programs");
   revalidatePath("/");
+  redirect("/admin/program-uploads?saved=program_rejected");
 }
 

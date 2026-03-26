@@ -102,33 +102,42 @@ async function ProgramDetailsContent({
         </h2>
 
         {uploads?.length ? (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {uploads.map((u) => (
               <figure
                 key={u.id}
-                className="overflow-hidden rounded-3xl border border-zinc-700 bg-zinc-900/40"
+                className="overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-900/50"
               >
-                {u.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={u.image_url}
-                    alt={u.caption || "Program media"}
-                    className="h-56 w-full object-cover"
-                  />
-                ) : u.video_url ? (
-                  <video
-                    src={u.video_url}
-                    controls
-                    className="h-56 w-full object-cover"
-                  />
-                ) : (
-                  <div className="h-56 w-full" />
-                )}
-                {u.caption && (
-                  <figcaption className="p-3 text-xs text-zinc-300">
-                    {u.caption}
-                  </figcaption>
-                )}
+                <div className="aspect-[4/3] w-full overflow-hidden bg-zinc-950/60">
+                  {u.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={u.image_url}
+                      alt={u.caption || "Program media"}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : u.video_url ? (
+                    <video
+                      src={u.video_url}
+                      controls
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full" />
+                  )}
+                </div>
+                <figcaption className="space-y-1 border-t border-zinc-800 p-3">
+                  <p className="line-clamp-2 text-xs text-zinc-300">
+                    {u.caption || "Impact media upload"}
+                  </p>
+                  <p className="text-[11px] text-zinc-500">
+                    {new Date(u.created_at).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    })}
+                  </p>
+                </figcaption>
               </figure>
             ))}
           </div>

@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3d46a"/>
+      <stop offset="100%" stop-color="#d4af37"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b5d24"/>
+      <stop offset="100%" stop-color="#006400"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="#0f172a"/>
+  <rect x="18" y="18" width="476" height="476" rx="98" fill="none" stroke="url(#gold)" stroke-width="14"/>
+
+  <circle cx="256" cy="230" r="128" fill="url(#green)" stroke="url(#gold)" stroke-width="14"/>
+  <path d="M196 300l60-148 60 148h-34l-13-33h-26l-13 33h-34zm58-63h4l-2-6-2 6z" fill="#f8fafc"/>
+  <rect x="148" y="336" width="216" height="44" rx="22" fill="url(#gold)"/>
+  <text x="256" y="365" text-anchor="middle" fill="#0f172a" font-size="22" font-weight="800" font-family="Arial, Helvetica, sans-serif">AMBASSADORS</text>
+</svg>
