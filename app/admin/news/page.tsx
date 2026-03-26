@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { createNewsAdminAction, deleteNewsAdminAction } from "./actions";
 import { Button } from "@/components/ui/button";
+import { NewsImageUploadField } from "@/components/news/news-image-upload-field";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -102,11 +103,7 @@ async function AdminNewsContent({ searchParams }: { searchParams: SearchParams }
             rows={7}
             className="rounded-xl border border-zinc-700 bg-zinc-950/70 px-3 py-2.5 text-sm text-zinc-100"
           />
-          <input
-            name="featured_image_url"
-            placeholder="Featured image URL (optional)"
-            className="rounded-xl border border-zinc-700 bg-zinc-950/70 px-3 py-2.5 text-sm text-zinc-100"
-          />
+          <NewsImageUploadField userId={user.id} />
           <input
             name="author"
             defaultValue="Amuchie Ambassadors Team"

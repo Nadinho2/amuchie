@@ -142,34 +142,34 @@ export function DigitalCard({
         onMouseLeave={onLeave}
         className="group"
       >
-        <div className="rounded-[26px] bg-gradient-to-br from-[#D4AF37] via-[#E8B923] to-[#9f7f18] p-[1.5px] shadow-2xl shadow-[#D4AF37]/15">
+        <div className="rounded-[22px] bg-gradient-to-br from-[#D4AF37] via-[#E8B923] to-[#9f7f18] p-[1.5px] shadow-2xl shadow-[#D4AF37]/15 sm:rounded-[26px]">
           <div
             ref={cardRef}
-            className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#0F172A] via-[#111827] to-[#006400] p-4 sm:p-5"
+            className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-[#0F172A] via-[#111827] to-[#006400] p-3 sm:rounded-[24px] sm:p-5"
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(212,175,55,0.20),_transparent_45%)]" />
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,transparent,rgba(255,255,255,0.04),transparent)]" />
 
             <div className="relative z-10 space-y-4">
-              <header className="flex items-start justify-between border-b border-white/10 pb-3">
+              <header className="flex items-start justify-between border-b border-white/10 pb-2.5 sm:pb-3">
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#E8B923]">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#E8B923] sm:text-[11px] sm:tracking-[0.25em]">
                     Amuchie Ambassadors
                   </p>
-                  <h3 className="mt-1 text-lg font-extrabold text-white">
+                  <h3 className="mt-1 text-base font-extrabold text-white sm:text-lg">
                     Digital ID Card
                   </h3>
                 </div>
-                <p className="text-right text-[10px] text-zinc-300 sm:text-[11px]">
+                <p className="text-right text-[9px] leading-tight text-zinc-300 sm:text-[11px]">
                   Ezinwa Sir Stanley Chiedoziem Amuchie
                   <br />
                   Imo 2027
                 </p>
               </header>
 
-              <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
-                <div className="space-y-3 sm:max-w-[220px]">
-                  <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-2 border-[#E8B923]/85 bg-zinc-900 shadow-lg shadow-[#E8B923]/20 sm:h-32 sm:w-32">
+              <section className="grid grid-cols-[112px_minmax(0,1fr)] gap-3 sm:grid-cols-2 sm:gap-5">
+                <div className="space-y-2.5 sm:max-w-[220px] sm:space-y-3">
+                  <div className="mx-auto h-24 w-24 overflow-hidden rounded-full border-2 border-[#E8B923]/85 bg-zinc-900 shadow-lg shadow-[#E8B923]/20 sm:h-32 sm:w-32">
                     {photoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -184,26 +184,27 @@ export function DigitalCard({
                     )}
                   </div>
 
-                  <div className="mx-auto w-fit rounded-xl border border-[#E8B923]/35 bg-black/30 p-2">
+                  <div className="mx-auto w-fit rounded-xl border border-[#E8B923]/35 bg-black/30 p-1.5 sm:p-2">
                     <QRCode
                       value={qrValue}
-                      size={118}
+                      size={88}
                       bgColor="transparent"
                       fgColor="#F8FAFC"
+                      className="sm:[&_svg]:h-[118px] sm:[&_svg]:w-[118px]"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3 self-center">
-                  <h2 className="text-balance text-xl font-extrabold leading-tight text-white sm:text-2xl">
+                <div className="space-y-2 self-center sm:space-y-3">
+                  <h2 className="text-balance text-lg font-extrabold leading-tight text-white sm:text-2xl">
                     {fullName}
                   </h2>
-                  <p className="font-mono text-sm font-bold tracking-wide text-[#E8B923] sm:text-base">
+                  <p className="font-mono text-xs font-bold tracking-wide text-[#E8B923] sm:text-base">
                     {ambassadorNumber}
                   </p>
-                  <p className="text-sm text-zinc-200">{lga || "Imo State"}</p>
+                  <p className="text-xs text-zinc-200 sm:text-sm">{lga || "Imo State"}</p>
 
-                  <div className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide ${levelPalette[level]}`}>
+                  <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide sm:px-3 sm:text-xs ${levelPalette[level]}`}>
                     {level === "gold" ? (
                       <Crown className="h-3.5 w-3.5" />
                     ) : (
@@ -214,22 +215,22 @@ export function DigitalCard({
                 </div>
               </section>
 
-              <footer className="flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-3 sm:flex-row sm:items-end">
-                <div className="max-w-[72%] sm:max-w-[78%]">
-                  <p className="text-xs text-zinc-200">
+              <footer className="flex items-end justify-between gap-2 border-t border-white/10 pt-2.5 sm:gap-3 sm:pt-3">
+                <div className="min-w-0 max-w-[72%] sm:max-w-[78%]">
+                  <p className="text-[11px] text-zinc-200 sm:text-xs">
                     Service to Humanity • Ezinwa Sir Stanley Chiedoziem Amuchie 2027
                   </p>
-                  <p className="mt-1 text-[11px] text-zinc-400">
+                  <p className="mt-1 text-[10px] text-zinc-400 sm:text-[11px]">
                     Proud Member of Amuchie&apos;s Movement
                   </p>
                 </div>
 
-                <div className="ml-auto flex items-center gap-2 rounded-xl border border-[#E8B923]/40 bg-black/25 p-1.5">
+                <div className="ml-auto flex shrink-0 items-center gap-2 rounded-xl border border-[#E8B923]/40 bg-black/25 p-1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={SIR_STANLEY_IMAGE_URL}
                     alt="Sir Stanley Chiedoziem Amuchie portrait"
-                    className="h-[66px] w-[66px] rounded-lg border border-[#E8B923]/55 object-cover"
+                    className="h-[54px] w-[54px] rounded-lg border border-[#E8B923]/55 object-cover sm:h-[66px] sm:w-[66px]"
                   />
                 </div>
               </footer>
