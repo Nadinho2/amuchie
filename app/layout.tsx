@@ -41,42 +41,42 @@ export default function RootLayout({
         >
           <div className="min-h-screen">
             <header className="sticky top-0 z-40 border-b border-zinc-700/70 bg-zinc-950/80 backdrop-blur">
-              <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-                <Link href="/" className="inline-flex items-center gap-2.5">
+              <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <Link href="/" className="inline-flex items-center gap-2">
                   <Image
                     src="/amuchie-logo.svg"
                     alt="Amuchie Ambassadors Logo"
-                    width={34}
-                    height={34}
+                    width={30}
+                    height={30}
                     className="rounded-md"
                     priority
                   />
-                  <span className="bg-gradient-to-r from-emerald-200 via-yellow-300 to-amber-300 bg-clip-text text-sm font-extrabold tracking-[0.08em] text-transparent sm:text-base">
-                    AMUCHIE AMBASSADORS
+                  <span className="bg-gradient-to-r from-emerald-200 via-yellow-300 to-amber-300 bg-clip-text text-xs font-extrabold tracking-[0.08em] text-transparent sm:text-base">
+                    AMUCHIE <span className="hidden sm:inline">AMBASSADORS</span>
                   </span>
                 </Link>
-                <nav className="flex items-center gap-2 text-xs sm:text-sm">
+                <nav className="flex w-full flex-wrap items-center gap-1.5 text-[11px] sm:w-auto sm:gap-2 sm:text-sm">
                   <Link
                     href="/ezinwa"
-                    className="rounded-lg border border-emerald-300/40 bg-emerald-300/10 px-3 py-1.5 text-emerald-200 hover:bg-emerald-300/20"
+                    className="rounded-lg border border-emerald-300/40 bg-emerald-300/10 px-2.5 py-1 text-emerald-200 hover:bg-emerald-300/20 sm:px-3 sm:py-1.5"
                   >
                     Meet Amuchie
                   </Link>
                   <Link
                     href="/programs?tab=all"
-                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                    className="rounded-lg border border-zinc-700 px-2.5 py-1 text-zinc-200 hover:bg-zinc-900 sm:px-3 sm:py-1.5"
                   >
                     Programs
                   </Link>
                   <Link
                     href="/news"
-                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                    className="rounded-lg border border-zinc-700 px-2.5 py-1 text-zinc-200 hover:bg-zinc-900 sm:px-3 sm:py-1.5"
                   >
                     News &amp; Updates
                   </Link>
                   <Link
                     href="/protected"
-                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                    className="rounded-lg border border-zinc-700 px-2.5 py-1 text-zinc-200 hover:bg-zinc-900 sm:px-3 sm:py-1.5"
                   >
                     Dashboard
                   </Link>
