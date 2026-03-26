@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
@@ -9,8 +10,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Amuchie Ambassadors Loyalty Portal",
+  description:
+    "Official loyalty portal for Sir Stanley Amuchie's 2027 Imo State gubernatorial campaign.",
 };
 
 const geistSans = Geist({
@@ -25,15 +27,67 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+    <html lang="en" suppressHydrationWarning className="dark">
+      <body
+        className={`${geistSans.className} min-h-screen antialiased bg-gradient-to-b from-emerald-950 via-green-950 to-zinc-950 text-zinc-100`}
+      >
+        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(234,179,8,0.14),_transparent_52%)]" />
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
+          <div className="min-h-screen">
+            <header className="sticky top-0 z-40 border-b border-zinc-700/70 bg-zinc-950/80 backdrop-blur">
+              <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+                <Link href="/" className="font-extrabold tracking-tight text-white">
+                  Amuchie Portal
+                </Link>
+                <nav className="flex items-center gap-2 text-xs sm:text-sm">
+                  <Link
+                    href="/ezinwa"
+                    className="rounded-lg border border-emerald-300/40 bg-emerald-300/10 px-3 py-1.5 text-emerald-200 hover:bg-emerald-300/20"
+                  >
+                    Meet Amuchie
+                  </Link>
+                  <Link
+                    href="/programs?tab=all"
+                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                  >
+                    Programs
+                  </Link>
+                  <Link
+                    href="/news"
+                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                  >
+                    News &amp; Updates
+                  </Link>
+                  <Link
+                    href="/protected"
+                    className="rounded-lg border border-zinc-700 px-3 py-1.5 text-zinc-200 hover:bg-zinc-900"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/admin"
+                    className="rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-1.5 text-amber-200 hover:bg-amber-300/20"
+                  >
+                    Admin
+                  </Link>
+                </nav>
+              </div>
+            </header>
+
+            <div>{children}</div>
+
+            <footer className="mt-10 border-t border-zinc-700/70 bg-zinc-950/70">
+              <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <p>Amuchie Ambassadors Loyalty Portal</p>
+                <p>Goodlight Foundation Impact Dashboard</p>
+              </div>
+            </footer>
+          </div>
         </ThemeProvider>
       </body>
     </html>
