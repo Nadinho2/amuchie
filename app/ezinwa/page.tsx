@@ -36,12 +36,12 @@ const visionPillars = [
 ];
 
 const gallery = [
-  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1541872705-1f73c6400ec9?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=1200&auto=format&fit=crop",
+  "/images/ezinwa-gallery-1.png",
+  "/images/ezinwa-gallery-2.png",
+  "/images/ezinwa-gallery-3.png",
+  "/images/ezinwa-gallery-4.png",
+  "/images/ezinwa-gallery-5.png",
+  "/images/ezinwa-gallery-6.png",
 ];
 
 export default function EzinwaPage() {
@@ -119,11 +119,18 @@ export default function EzinwaPage() {
           <Badge className="border-amber-300/40 bg-amber-300/10 text-amber-200">Live feed-ready</Badge>
         </div>
 
-        <div className="mt-5 columns-1 gap-3 sm:columns-2 lg:columns-3">
+        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {gallery.map((src) => (
-            <div key={src} className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-950/35">
+            <div
+              key={src}
+              className="overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-950/35"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="Sir Stanley community engagement" className="h-full w-full object-cover" />
+              <img
+                src={src}
+                alt="Sir Stanley community engagement"
+                className="h-64 w-full bg-zinc-900 object-contain p-1"
+              />
             </div>
           ))}
         </div>

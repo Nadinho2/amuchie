@@ -18,10 +18,10 @@ export function EzinwaHero({
     <section className="relative overflow-hidden rounded-3xl border border-amber-300/20">
       <div className="relative h-[56vh] min-h-[360px] w-full">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2000&auto=format&fit=crop')",
+            backgroundImage: "url('/images/meet-amuchie.png')",
+            backgroundPosition: "center 18%",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/65 to-zinc-950/80" />
