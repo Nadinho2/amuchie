@@ -51,8 +51,8 @@ export default function RootLayout({
                     className="rounded-md"
                     priority
                   />
-                  <span className="bg-gradient-to-r from-emerald-200 via-yellow-300 to-amber-300 bg-clip-text text-xs font-extrabold tracking-[0.08em] text-transparent sm:text-base">
-                    AMUCHIE <span className="hidden sm:inline">AMBASSADORS</span>
+                  <span className="bg-gradient-to-r from-emerald-200 via-yellow-300 to-amber-300 bg-clip-text text-[10px] font-extrabold leading-tight tracking-[0.08em] text-transparent sm:text-base">
+                    AMUCHIE <span className="block sm:inline">AMBASSADORS</span>
                   </span>
                 </Link>
                 <nav className="flex w-full flex-wrap items-center gap-1.5 text-[11px] sm:w-auto sm:gap-2 sm:text-sm">

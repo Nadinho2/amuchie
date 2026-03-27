@@ -55,10 +55,10 @@ export function ProgramFilters({
             value={programType}
             onValueChange={(v) => setProgramType(v)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full border-zinc-700 bg-zinc-950/80">
               <SelectValue placeholder="All types" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="z-[90] border border-zinc-700 bg-zinc-950 text-zinc-100">
               <SelectItem value="all">All Programs</SelectItem>
               {programTypeOptions.map((t) => (
                 <SelectItem key={t} value={t}>

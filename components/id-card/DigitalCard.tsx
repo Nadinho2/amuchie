@@ -105,11 +105,40 @@ export function DigitalCard({
   async function shareWhatsApp() {
     setBusy("share");
     try {
-      // Prepare the card image first, so user can attach it immediately.
-      await downloadPng();
-      const text = encodeURIComponent(
+      const dataUrl = await getCardPngDataUrl();
+      const rawText =
         `I'm an Amuchie Ambassador supporting Ezinwa 2027.\n${fullName} • ${ambassadorNumber}\nService to Humanity`,
-      );
+      const text = encodeURIComponent(rawText);
+
+      if (dataUrl) {
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], `${ambassadorNumber}.png`, {
+          type: "image/png",
+        });
+
+        const canNativeShare =
+          typeof navigator !== "undefined" &&
+          "share" in navigator &&
+          "canShare" in navigator &&
+          navigator.canShare({ files: [file] });
+
+        if (canNativeShare) {
+          await navigator.share({
+            title: "Amuchie Ambassador ID Card",
+            text: rawText,
+            files: [file],
+          });
+          return;
+        }
+      }
+
+      // Fallback for devices/browsers without file-sharing support.
+      if (dataUrl) {
+        const link = document.createElement("a");
+        link.download = `${ambassadorNumber}.png`;
+        link.href = dataUrl;
+        link.click();
+      }
       window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
     } finally {
       setBusy(null);

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { EzinwaHero } from "@/components/ezinwa/ezinwa-hero";
+import { BecomeAmbassadorShareButton } from "@/components/share/become-ambassador-share-button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Building2, HandHeart, Landmark, Share2, Sparkles, Target, Users } from "lucide-react";
+import { ArrowRight, Building2, HandHeart, Landmark, Sparkles, Target, Users } from "lucide-react";
 
 const achievements = [
   "First Class in Industrial Chemistry (University of Benin).",
@@ -153,15 +154,7 @@ export default function EzinwaPage() {
               Join Amuchie Ambassadors
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            <a
-              href="https://wa.me/?text=I%20support%20Ezinwa%20Sir%20Stanley%20Chiedoziem%20Amuchie%20for%20Imo%20State%202027."
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-xl border border-emerald-300/40 bg-emerald-300/10 px-5 py-3 text-sm font-semibold text-emerald-200"
-            >
-              Share on WhatsApp
-              <Share2 className="ml-2 h-4 w-4" />
-            </a>
+            <BecomeAmbassadorShareButton />
           </div>
         </div>
       </section>

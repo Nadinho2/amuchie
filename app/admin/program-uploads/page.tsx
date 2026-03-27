@@ -4,10 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Clock3 } from "lucide-react";
+import { CheckCircle2, XCircle, Clock3, Trash2 } from "lucide-react";
 import {
   approveProgramAction,
   approveProgramUploadAction,
+  deleteProgramAction,
   rejectProgramAction,
   rejectProgramUploadAction,
 } from "./actions";
@@ -99,6 +100,13 @@ async function AdminProgramUploadsContent({
     .eq("approved", false)
     .eq("rejected", false)
     .order("created_at", { ascending: false })
+    .limit(30);
+
+  const { data: approvedPrograms } = await supabase
+    .from("empowerment_programs")
+    .select("id,title,description,program_type,date,location,lga,beneficiary_count,created_at")
+    .eq("approved", true)
+    .order("date", { ascending: false })
     .limit(30);
 
   const { data: uploads } = await supabase
@@ -223,6 +231,49 @@ async function AdminProgramUploadsContent({
                     >
                       <XCircle className="mr-2 h-4 w-4" />
                       Reject
+                    </Button>
+                  </form>
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </section>
+
+      <section className="mt-8 space-y-4">
+        <h2 className="text-lg font-bold text-white">Approved Programs</h2>
+        {(approvedPrograms ?? []).length === 0 ? (
+          <Card className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-6 text-sm text-zinc-300">
+            No approved programs yet.
+          </Card>
+        ) : (
+          (approvedPrograms ?? []).map((p) => (
+            <Card
+              key={p.id}
+              className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-4 sm:p-5"
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 flex-1">
+                  <Badge className="border-emerald-300/40 bg-emerald-300/10 text-emerald-200">
+                    Approved Program
+                  </Badge>
+                  <h3 className="mt-2 text-base font-extrabold text-white">{p.title}</h3>
+                  <p className="mt-1 text-sm text-zinc-300">{p.description}</p>
+                  <p className="mt-2 text-xs text-zinc-400">
+                    {new Date(p.date).toLocaleDateString()} • {p.lga ? `${p.lga} • ` : ""}
+                    {p.location}
+                  </p>
+                </div>
+
+                <div className="sm:w-44">
+                  <form action={deleteProgramAction}>
+                    <input type="hidden" name="program_id" value={p.id} />
+                    <Button
+                      type="submit"
+                      className="w-full bg-red-400/10 text-red-200 border border-red-300/30 hover:bg-red-400/15"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
                     </Button>
                   </form>
                 </div>

@@ -149,3 +149,29 @@ export async function rejectProgramAction(formData: FormData) {
   redirect("/admin/program-uploads?saved=program_rejected");
 }
 
+export async function deleteProgramAction(formData: FormData) {
+  const programId = String(formData.get("program_id") || "");
+  if (!programId) redirect("/admin/program-uploads");
+
+  const supabase = await createClient();
+  await requireAdmin(supabase);
+
+  const { data, error } = await supabase
+    .from("empowerment_programs")
+    .delete()
+    .eq("id", programId)
+    .select("id");
+
+  if (error || !data || data.length === 0) {
+    const message =
+      error?.message ||
+      "Program delete failed: no rows were removed. Confirm admin role and RLS policies.";
+    redirect(`/admin/program-uploads?error=${encodeURIComponent(message)}`);
+  }
+
+  revalidatePath("/admin/program-uploads");
+  revalidatePath("/programs");
+  revalidatePath("/");
+  redirect("/admin/program-uploads?saved=program_deleted");
+}
+
