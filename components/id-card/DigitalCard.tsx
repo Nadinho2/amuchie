@@ -106,8 +106,7 @@ export function DigitalCard({
     setBusy("share");
     try {
       const dataUrl = await getCardPngDataUrl();
-      const rawText =
-        `I'm an Amuchie Ambassador supporting Ezinwa 2027.\n${fullName} • ${ambassadorNumber}\nService to Humanity`,
+      const rawText = `I'm an Amuchie Ambassador supporting Ezinwa Sir Stanley Amuchie 2027.\n${fullName} • ${ambassadorNumber}\nService to Humanity`;
       const text = encodeURIComponent(rawText);
 
       if (dataUrl) {
