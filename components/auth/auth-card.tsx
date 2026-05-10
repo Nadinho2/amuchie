@@ -1,64 +1,50 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, Mail, ShieldCheck } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import type { AuthActionState } from "@/app/auth/actions";
+import { login, signUp } from "@/app/auth/actions";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 type AuthMode = "login" | "signup";
 
+const initialState: AuthActionState = { error: null };
+
+function SubmitButton(props: { mode: AuthMode }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 px-4 py-2.5 text-sm font-semibold text-zinc-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
+    >
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Processing...
+        </>
+      ) : props.mode === "signup" ? (
+        "Create Ambassador Account"
+      ) : (
+        "Access My Portal"
+      )}
+    </button>
+  );
+}
+
 export function AuthCard() {
-  const router = useRouter();
   const [mode, setMode] = useState<AuthMode>("signup");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loginState, loginAction] = useActionState(login, initialState);
+  const [signUpState, signUpAction] = useActionState(signUp, initialState);
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setMessage(null);
-
-    try {
-      const supabase = createClient();
-
-      if (mode === "signup") {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-            },
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          },
-        });
-
-        if (signUpError) throw signUpError;
-        setMessage("Account created. Check your email to confirm and continue.");
-      } else {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (signInError) throw signInError;
-        setMessage("Welcome back, Ambassador. Redirecting to your dashboard...");
-        router.push("/protected");
-        router.refresh();
-      }
-    } catch (err) {
-      const fallback = "Something went wrong. Please try again.";
-      setError(err instanceof Error ? err.message : fallback);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const activeState = mode === "signup" ? signUpState : loginState;
+  const formAction = mode === "signup" ? signUpAction : loginAction;
 
   return (
     <motion.section
@@ -99,7 +85,7 @@ export function AuthCard() {
         </button>
       </div>
 
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         {mode === "signup" && (
           <div>
             <label htmlFor="full-name" className="mb-1 block text-sm text-zinc-300">
@@ -107,6 +93,7 @@ export function AuthCard() {
             </label>
             <input
               id="full-name"
+              name="full_name"
               type="text"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
@@ -125,6 +112,7 @@ export function AuthCard() {
             <Mail className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-zinc-500" />
             <input
               id="email"
+              name="email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -141,6 +129,7 @@ export function AuthCard() {
           </label>
           <input
             id="password"
+            name="password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -151,32 +140,12 @@ export function AuthCard() {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 px-4 py-2.5 text-sm font-semibold text-zinc-900 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </>
-          ) : mode === "signup" ? (
-            "Create Ambassador Account"
-          ) : (
-            "Access My Portal"
-          )}
-        </button>
+        <SubmitButton mode={mode} />
       </form>
 
-      {message && (
-        <p className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs text-emerald-300">
-          {message}
-        </p>
-      )}
-      {error && (
+      {activeState.error && (
         <p className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 p-2.5 text-xs text-red-300">
-          {error}
+          {activeState.error}
         </p>
       )}
     </motion.section>
