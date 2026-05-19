@@ -78,8 +78,9 @@ Please generate the speech now.`;
     return NextResponse.json({ speech });
   } catch (error) {
     console.error("Error generating speech:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to generate speech" },
+      { error: `Failed to generate speech: ${errorMessage}` },
       { status: 500 }
     );
   }
