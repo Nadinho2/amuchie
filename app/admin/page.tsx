@@ -52,6 +52,17 @@ async function AdminIndexContent() {
             Approve or reject pending programs and user-submitted impact evidence.
           </p>
         </Link>
+
+        <Link
+          href="/protected/speech-generator"
+          className="rounded-3xl border border-zinc-700 bg-zinc-900/40 p-6 transition hover:border-amber-300/40 hover:bg-zinc-900/70 sm:col-span-2"
+        >
+          <p className="text-xs uppercase tracking-[0.15em] text-amber-300/80">Tools</p>
+          <h2 className="mt-2 text-xl font-bold text-white">AI Speech Generator</h2>
+          <p className="mt-2 text-sm text-zinc-300">
+            Generate professional speeches for Sir Stanley Chiedoziem Amuchie for any occasion.
+          </p>
+        </Link>
       </section>
     </main>
   );

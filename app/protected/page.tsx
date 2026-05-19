@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
@@ -50,16 +51,26 @@ async function ProtectedContent(props: {
   return (
     <div className="w-full space-y-8">
       <section className="rounded-3xl border border-emerald-700/40 bg-zinc-900/50 p-5 backdrop-blur sm:p-6">
-        <p className="text-xs uppercase tracking-[0.2em] text-amber-300/80">
-          Page 2
-        </p>
-        <h1 className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
-          Ambassador Profile & Digital ID
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm text-zinc-300">
-          Complete your profile details to activate your campaign identity card.
-          Your ambassador number and campaign tier are reflected in real time.
-        </p>
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-amber-300/80">
+              Page 2
+            </p>
+            <h1 className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
+              Ambassador Profile & Digital ID
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-zinc-300">
+              Complete your profile details to activate your campaign identity card.
+              Your ambassador number and campaign tier are reflected in real time.
+            </p>
+          </div>
+          <Link
+            href="/protected/speech-generator"
+            className="rounded-xl border border-amber-300/40 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-200 hover:bg-amber-300/20 transition"
+          >
+            AI Speech Generator
+          </Link>
+        </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
