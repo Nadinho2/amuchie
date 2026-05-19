@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Mic, Loader2 } from "lucide-react";
+import { Copy, Mic, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function SpeechGeneratorPage() {
   const [occasion, setOccasion] = useState("");
@@ -177,11 +178,33 @@ export default function SpeechGeneratorPage() {
                 />
               </div>
 
-              {error && (
-                <p className="text-sm text-red-400 bg-red-950/30 border border-red-800/30 rounded-lg p-3">
-                  {error}
-                </p>
-              )}
+              <AnimatePresence mode="wait">
+                {error && (
+                  <motion.div
+                    key="error"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="relative overflow-hidden rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-950/60 to-red-900/30 p-4 shadow-lg"
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(239,68,68,0.15)_0%,_transparent_50%)] pointer-events-none" />
+                    <div className="relative flex items-start gap-3">
+                      <div className="mt-0.5 rounded-full bg-red-500/20 p-1.5">
+                        <AlertCircle className="h-5 w-5 text-red-400" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="flex items-center gap-2 text-sm font-semibold text-red-200">
+                          <Sparkles className="h-3.5 w-3.5" />
+                          Oops! We hit a little snag
+                        </p>
+                        <p className="mt-1 text-xs leading-relaxed text-red-300/90">
+                          {error}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <Button
                 type="submit"
@@ -219,16 +242,35 @@ export default function SpeechGeneratorPage() {
             </div>
 
             <div className="flex-1 overflow-auto">
-              {!speech && !isGenerating && !error && (
-                <p className="text-sm text-zinc-400">
-                  Your generated speech will appear here.
-                </p>
-              )}
-              {speech && (
-                <div className="whitespace-pre-wrap text-sm text-zinc-200 leading-relaxed">
-                  {speech}
-                </div>
-              )}
+              <AnimatePresence mode="wait">
+                {!speech && !isGenerating && !error && (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex h-full flex-col items-center justify-center gap-4 text-center"
+                  >
+                    <div className="rounded-full bg-zinc-800/50 p-4">
+                      <Sparkles className="h-8 w-8 text-zinc-500" />
+                    </div>
+                    <p className="text-sm text-zinc-400">
+                      Your generated speech will appear here.
+                    </p>
+                  </motion.div>
+                )}
+                {speech && (
+                  <motion.div
+                    key="speech"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="whitespace-pre-wrap text-sm text-zinc-200 leading-relaxed"
+                  >
+                    {speech}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </section>
