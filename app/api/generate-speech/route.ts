@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
 const SYSTEM_PROMPT = `You are a professional speechwriter for Sir Stanley Chiedoziem Amuchie, known as Ezinwa, a 2027 Imo State gubernatorial aspirant in Nigeria.
@@ -35,23 +35,21 @@ WRITING RULES:
 - Reference Imo State, LGAs, or the specific occasion where relevant
 - Do not fabricate statistics — use general terms if no data is provided
 - End every speech with a strong call to action or a unifying closing statement
-- For cultural events, acknowledge traditional rulers and community elders appropriately
+- For cultural events, acknowledge traditional rulers and community elders appropriately`;
 
-Now generate a speech based on the following request, following all the rules above.`;
+const client = new OpenAI({
+  baseURL: "https://api.deepseek.com",
+  apiKey: process.env.DEEPSEEK_API_KEY,
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
+    if (!process.env.DEEPSEEK_API_KEY) {
       return NextResponse.json(
-        { error: "GEMINI_API_KEY not configured" },
+        { error: "DEEPSEEK_API_KEY not configured" },
         { status: 500 }
       );
     }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const body = await request.json();
     const { occasion, topic, duration, tone, extraContext } = body;
@@ -71,9 +69,17 @@ EXTRA CONTEXT (if any): ${extraContext || "None provided"}
 
 Please generate the speech now.`;
 
-    const result = await model.generateContent([SYSTEM_PROMPT, userPrompt]);
-    const response = await result.response;
-    const speech = response.text();
+    const completion = await client.chat.completions.create({
+      model: "deepseek-chat",
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userPrompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 2048,
+    });
+
+    const speech = completion.choices[0]?.message?.content ?? "";
 
     return NextResponse.json({ speech });
   } catch (error) {
