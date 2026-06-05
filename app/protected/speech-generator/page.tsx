@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Mic, Loader2, AlertCircle, Sparkles } from "lucide-react";
+import { Copy, Download, Mic, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -68,6 +68,33 @@ export default function SpeechGeneratorPage() {
     await navigator.clipboard.writeText(speech);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleExportPdf = async () => {
+    if (!speech) return;
+    const { jsPDF } = await import("jspdf");
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const maxLineWidth = pageWidth - margin * 2;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Sir Stanley Chiedoziem Amuchie (Ezinwa)", margin, 20);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text(`Occasion: ${occasion}  |  Tone: ${tone}  |  Duration: ${duration}`, margin, 28);
+
+    doc.setDrawColor(200, 200, 200);
+    doc.line(margin, 32, pageWidth - margin, 32);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    const lines = doc.splitTextToSize(speech, maxLineWidth);
+    doc.text(lines, margin, 40);
+
+    doc.save(`speech-${occasion.toLowerCase().replace(/\s+/g, "-")}.pdf`);
   };
 
   return (
@@ -229,15 +256,26 @@ export default function SpeechGeneratorPage() {
                 Generated Speech
               </h2>
               {speech && (
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={handleCopy}
-                  className="gap-2"
-                >
-                  <Copy className="h-4 w-4" />
-                  {copied ? "Copied!" : "Copy"}
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={handleCopy}
+                    className="gap-2"
+                  >
+                    <Copy className="h-4 w-4" />
+                    {copied ? "Copied!" : "Copy"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={handleExportPdf}
+                    className="gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Export PDF
+                  </Button>
+                </div>
               )}
             </div>
 
